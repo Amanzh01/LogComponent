@@ -5,7 +5,6 @@ public class Application {
         for(int i = 0; i < n;++i){
             log.write("message #" + Integer.toString(i + 1));
         }
-
+        log.stopAndWait();
     }
-
 }

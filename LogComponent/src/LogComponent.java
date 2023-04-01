@@ -45,6 +45,9 @@ public class LogComponent implements ILog {
     public void stopAndWait() {
         try {
             isRunning = false;
+            while(!logQueue.isEmpty()){
+                // wait
+            }
             writerThread.join();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
