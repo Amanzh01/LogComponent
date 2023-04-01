@@ -1,5 +1,5 @@
 public interface ILog {
-    public void stop();
+    public void stopNow();
     public void stopAndWait();
     public void write(String message);
 }

@@ -37,8 +37,9 @@ public class LogComponent implements ILog {
         }
     }
 
-    public void stop() {
+    public void stopNow() {
         isRunning = false;
+        logQueue.clear();
     }
 
     public void stopAndWait() {
@@ -57,7 +58,7 @@ public class LogComponent implements ILog {
         FileChannel fileChannel = null;
         ByteBuffer buffer = ByteBuffer.allocate(1024);
         try {
-            while (isRunning) {
+            while (isRunning || !logQueue.isEmpty()) {
                 String message = logQueue.take();
                 if (fileChannel == null || lastDate == null || !lastDate.toLocalDate().isEqual(LocalDateTime.now().toLocalDate())) {
                     if (fileChannel != null) {
