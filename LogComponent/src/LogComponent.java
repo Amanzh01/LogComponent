@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-// TODO: write UNIT tests
 public class LogComponent implements ILog {
 
     private static final int MAX_QUEUE_SIZE = 1000;
@@ -22,7 +21,7 @@ public class LogComponent implements ILog {
     public LogComponent(String logDirectory, String logFileNamePrefix) {
         this.logDirectory = logDirectory;
         this.logFileNamePrefix = logFileNamePrefix;
-        writerThread = new Thread(this::writeLogs);
+        writerThread = new Thread(this::writeTask);
         writerThread.start();
     }
 
@@ -45,16 +44,14 @@ public class LogComponent implements ILog {
     public void stopAndWait() {
         try {
             isRunning = false;
-            while(!logQueue.isEmpty()){
-                // wait
-            }
             writerThread.join();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             Thread.currentThread().interrupt();
             System.err.println("Error stopping log component: " + e.getMessage());
         }
     }
-    private void writeLogs() {
+
+    private void writeTask() {
         LocalDateTime lastDate = null;
         FileOutputStream fos = null;
         FileChannel fileChannel = null;
@@ -104,6 +101,7 @@ public class LogComponent implements ILog {
             }
         }
     }
+
 
 }
 
